@@ -41,6 +41,15 @@ public class Customer {
         delivered = false;
     }
 
+    public void randomCoord() {
+        x = (int)((Math.random() * 5));
+        if (x == 0) {
+            y = (int)((Math.random() * 4) + 1); //so this customer wont be at 0,0 which is where the user starts at
+        } else {
+            y = (int)((Math.random() * 5));
+        }
+    }
+
     public void setDelivered () {
         delivered = true;
     }

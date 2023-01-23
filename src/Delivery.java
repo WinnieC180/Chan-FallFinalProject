@@ -12,6 +12,7 @@ public class Delivery {
     int coins;
     int x;
     int y;
+    double difficulty;
 
     public Delivery() {
         scan = new Scanner(System.in);
@@ -19,6 +20,7 @@ public class Delivery {
         x = 0;
         y = 0;
         Board.clearBoard();
+        difficulty = 0.2;
     }
 
     public void play() {
@@ -34,7 +36,7 @@ public class Delivery {
         System.out.println("╔═.✵.════════════════════════════════════════╗" + "\n        Welcome to Speedy Food "
                 + name + "!\n╚════════════════════════════════════════.✵.═╝\n");
 
-        System.out.println("Intructions: \n- There are 3 modes in this game easy, normal, hard\n- In easy mode you will have to deliver less orders, and in hard mode you will have to deliver more\n- And you will have to deliver the order based on the coordinates given by the customer");
+        System.out.println("Instructions: \n- There are 3 modes in this game easy, normal, hard\n- In easy mode you will have to deliver less orders, and in hard mode you will have to deliver more\n- In the hard mode it is also easier to encounter a rude customer\n- And you will have to deliver the order based on the coordinates given by the customer");
         System.out.print("\nWhich mode do you choose? (E)asy (N)ormal (H)ard: ");
         String mode = scan.nextLine();
 
@@ -45,7 +47,8 @@ public class Delivery {
             for (int i = 0; i < deliveryList.length; i++) {
                 deliveryList[i] = new Customer();
             }
-
+            allDiffCoordinates();
+            difficulty = 0.5;
         } else if (mode.equals("N") || mode.equals("n")) {
             System.out.println(YELLOW + "\nYou have choosen the normal mode. " + WHITE);
 
@@ -53,7 +56,8 @@ public class Delivery {
             for (int i = 0; i < deliveryList.length; i++) {
                 deliveryList[i] = new Customer();
             }
-
+            allDiffCoordinates();
+            difficulty = 0.3;
         } else {
             System.out.println(BRIGHT_BLUE + "\nYou have choosen the easy mode. " + WHITE);
 
@@ -61,9 +65,8 @@ public class Delivery {
             for (int i = 0; i < deliveryList.length; i++) {
                 deliveryList[i] = new Customer();
             }
-
+            allDiffCoordinates();
         }
-
     }
 
     public void menu() {
@@ -83,7 +86,7 @@ public class Delivery {
 
         if (determineWin()) {
             System.out.println("\n══════════════════════════════════");
-            System.out.println("You delivered all the Pizza yay :D");
+            System.out.println("You delivered all the pizzas yay :D");
             System.out.println("══════════════════════════════════");
             System.out.println("\nCoins earned: " + YELLOW + coins + WHITE);
         }
@@ -115,6 +118,8 @@ public class Delivery {
         } else if (choice.equals("S") || choice.equals("s")) {
 
             System.out.println("\nDelivery that is left to make: ");
+            System.out.println("How to read the coordinates: (row, column) \n");
+
             for (int i =0; i < deliveryList.length; i++) {
                 if (!deliveryList[i].getDelivered()) {
                     System.out.println("Customer " + (i+1) + " is at (" + deliveryList[i].getX() + ", " + deliveryList[i].getY() + ")");
@@ -145,7 +150,7 @@ public class Delivery {
                             Board.move(x, y);
                             Board.printBoard();
                         } else {
-                            System.out.println(RED + "That is outside the board!" + WHITE + "\n");
+                            System.out.println(RED + "That is outside the board!" + WHITE);
                         }
                     } else if (direction.equals("s") || direction.equals("S")) {
                         if (!(x+1 > 4)) {
@@ -155,7 +160,7 @@ public class Delivery {
                             Board.move(x, y);
                             Board.printBoard();
                         } else {
-                            System.out.println(RED + "That is outside the board!" + WHITE + "\n");
+                            System.out.println(RED + "That is outside the board!" + WHITE);
                         }
 
                     } else if ((direction.equals("d") || direction.equals("D"))) {
@@ -166,7 +171,7 @@ public class Delivery {
                             Board.move(x, y);
                             Board.printBoard();
                         } else {
-                            System.out.println(RED + "That is outside the board!" + WHITE + "\n");
+                            System.out.println(RED + "That is outside the board!" + WHITE);
                         }
                     } else if (direction.equals("a") || direction.equals("A")) {
                         if (!(y-1 < 0)) {
@@ -176,10 +181,10 @@ public class Delivery {
                             Board.move(x, y);
                             Board.printBoard();
                         } else {
-                            System.out.println(RED + "That is outside the board!" + WHITE + "\n");
+                            System.out.println(RED + "That is outside the board!" + WHITE);
                         }
                     } else {
-                        System.out.println(RED + "That is not an option-" + WHITE + "\n");
+                        System.out.println(RED + "That is not an option-" + WHITE);
                     }
                 }
 
@@ -188,22 +193,74 @@ public class Delivery {
 
                         deliveryList[i].setDelivered();
                         System.out.println(YELLOW + "You delivered customer " + (i+1) + "'s order" + WHITE);
-                        int ranCoins = (int)((Math.random()*6)+5);
-                        coins += ranCoins;
-                        System.out.println("They paid you " + ranCoins + " coins!");
-                        stop = true;
+                        if (difficulty == 0.5) { //hardMode
+                            int ranNum = (int)((Math.random() * 10) + 1);
+                            if (ranNum > 6) {
+                                if (ranNum <= 2) {
+                                    System.out.println("The customer complained you are too slow!");
+                                    System.out.println("They refused to tip you :(");
+                                } else {
+                                    System.out.println("The customer complained the pizza is cold!");
+                                    System.out.println("They refused to tip you :(");
+                                }
+                                coins += 3;
+                                System.out.println("They paid you 3 coins");
+                                stop = true;
+                            } else {
+                                int ranCoins = (int)((Math.random()*6)+5);
+                                coins += ranCoins;
+                                System.out.println("They paid you " + ranCoins + " coins!");
+                                stop = true;
+                            }
+                        } else if (difficulty == 0.3) { //normalMode
+                            int ranNum = (int)((Math.random() * 10) + 1);
+                            if (ranNum < 4) {
+                                if (ranNum <= 2) {
+                                    System.out.println("The customer complained you are too slow!");
+                                    System.out.println("They refused to tip you :(");
+                                } else {
+                                    System.out.println("The customer complained the pizza is cold!");
+                                    System.out.println("They refused to tip you :(");
+                                }
+                                coins += 3;
+                                System.out.println("They paid you 3 coins");
+                                stop = true;
+                            } else {
+                                int ranCoins = (int)((Math.random()*6)+5);
+                                coins += ranCoins;
+                                System.out.println("They paid you " + ranCoins + " coins!");
+                                stop = true;
+                            }
+                        } else { //easyMode
+                            int ranNum = (int)((Math.random() * 10) + 1);
+                            if (ranNum < 3) {
+                                if (ranNum == 2) {
+                                    System.out.println("The customer complained you are too slow!");
+                                    System.out.println("They refused to tip you :(");
+                                } else {
+                                    System.out.println("The customer complained the pizza is cold!");
+                                    System.out.println("They refused to tip you :(");
+                                }
+                                coins += 3;
+                                System.out.println("They paid you 3 coins");
+                                stop = true;
+                            } else {
+                                int ranCoins = (int)((Math.random()*6)+5);
+                                coins += ranCoins;
+                                System.out.println("They paid you " + ranCoins + " coins!");
+                                stop = true;
+                            }
+                        }
+
                     }
                 }
 
                 if(!stop) { //When an order is delivered it will not print again
-                    System.out.print(BRIGHT_BLUE + "\nDo you want to move again? " + WHITE);
-                    yOrN = scan.nextLine();
                     out = false;
                 } else {
                     yOrN = "no";
                 }
             }
-
         } else {
             System.out.println(RED + "That is not a menu option! Try again" + WHITE);
         }
@@ -220,9 +277,24 @@ public class Delivery {
             } else {
                 System.out.println("Customer" + i + ": \n══════════════════════\n"+ delivery.getOrder() + "\n");
             }
-
         }
     }
+
+    private void allDiffCoordinates() { //to prevent any repetitive coordinates
+        for (int i = 0; i < deliveryList.length; i++) {
+            int lastX = deliveryList[i].getX();
+            int lastY = deliveryList[i].getY();
+
+            for (int j = 0; j < deliveryList.length; j++) {
+                while (lastX == deliveryList[j].getX() && lastY == deliveryList[j].getY())
+                {
+                    deliveryList[j].randomCoord();
+                }
+            }
+        }
+    }
+
+
 
 }
 
