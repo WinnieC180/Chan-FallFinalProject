@@ -8,7 +8,7 @@ public class Customer {
     private int y;
     private boolean delivered;
 
-    public Customer() {
+    public Customer() { // in the constructor the pizza order for each customer is created
         int random = (int)(Math.random() * PIZZACRUST.length);
         order = "Crust: " + PIZZACRUST[random];
 

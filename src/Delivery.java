@@ -12,7 +12,7 @@ public class Delivery {
     int coins;
     int x;
     int y;
-    double difficulty;
+    double difficulty; //makes it harder by increasing the chase of the user facing a rude customer
 
     public Delivery() {
         scan = new Scanner(System.in);
@@ -40,8 +40,10 @@ public class Delivery {
         System.out.print("\nWhich mode do you choose? (E)asy (N)ormal (H)ard: ");
         String mode = scan.nextLine();
 
+        /*The following if  and else if statement will create a deliveryList depending on the difficulty so
+        if it is in hard mode the user will deliver 7 pizzas and for each element a new Customer object is created*/
         if (mode.equals("H") || mode.equals("h")) {
-            System.out.println(RED + "\nYou have choosen the hard mode. " + WHITE);
+            System.out.println(RED + "\nYou have chosen the hard mode. " + WHITE);
 
             deliveryList = new Customer[7];
             for (int i = 0; i < deliveryList.length; i++) {
@@ -50,7 +52,7 @@ public class Delivery {
             allDiffCoordinates();
             difficulty = 0.5;
         } else if (mode.equals("N") || mode.equals("n")) {
-            System.out.println(YELLOW + "\nYou have choosen the normal mode. " + WHITE);
+            System.out.println(YELLOW + "\nYou have chosen the normal mode. " + WHITE);
 
             deliveryList = new Customer[5];
             for (int i = 0; i < deliveryList.length; i++) {
@@ -59,7 +61,7 @@ public class Delivery {
             allDiffCoordinates();
             difficulty = 0.3;
         } else {
-            System.out.println(BRIGHT_BLUE + "\nYou have choosen the easy mode. " + WHITE);
+            System.out.println(BRIGHT_BLUE + "\nYou have chosen the easy mode. " + WHITE);
 
             deliveryList = new Customer[3];
             for (int i = 0; i < deliveryList.length; i++) {
@@ -71,7 +73,7 @@ public class Delivery {
 
     public void menu() {
         String choice = "";
-        while (!determineWin() && !choice.equals("e")  && !choice.equals("E")) {
+        while (!determineWin() && !choice.equals("e")  && !choice.equals("E")) { //The menu will continue printing until the user delivered all the pizzas OR decide to exit
             System.out.println("\nMain Menu: \n═══════════════════════════════════════════════\n");
             System.out.println("(C)heck your list of orders you have to deliver");
             System.out.println("(S)tart delivering pizzas");
@@ -92,7 +94,7 @@ public class Delivery {
         }
     }
 
-    private boolean determineWin() {
+    private boolean determineWin() { //helper method to check if all the pizzas are delivered
         for (Customer delivery : deliveryList) {
             if (!delivery.getDelivered()) {
                 return false;
@@ -115,12 +117,13 @@ public class Delivery {
             }
         } else if (choice.equals("e") || choice.equals("E")) {
             System.out.println("\nBye bye");
-        } else if (choice.equals("S") || choice.equals("s")) {
+
+        } else if (choice.equals("S") || choice.equals("s")) { //when the user decides to start delivering
 
             System.out.println("\nDelivery that is left to make: ");
             System.out.println("How to read the coordinates: (row, column) \n");
 
-            for (int i =0; i < deliveryList.length; i++) {
+            for (int i =0; i < deliveryList.length; i++) { //prints out all the delivery that still need to be made
                 if (!deliveryList[i].getDelivered()) {
                     System.out.println("Customer " + (i+1) + " is at (" + deliveryList[i].getX() + ", " + deliveryList[i].getY() + ")");
                 }
@@ -134,7 +137,7 @@ public class Delivery {
             boolean out = false;
 
             while ((yOrN.equals("yes")) && !determineWin()) {
-                while (!out) {
+                while (!out) { //allows the user to continue to move along the board until they delivered one pizza
                     System.out.println();
                     System.out.println(BRIGHT_BLUE + "\nYou are currently at (" + x + ", " + y + ")"+ WHITE);
                     System.out.println("Which direction do you want to go to? ");
@@ -266,7 +269,7 @@ public class Delivery {
         }
     }
 
-    private void printCustomers() { //if delivered turn text blue add checkmark
+    private void printCustomers() { //if delivered turn text blue add checkmark //helper method used in processChoice()
         System.out.println();
         int i = 0;
         for (Customer delivery : deliveryList) {
@@ -280,7 +283,7 @@ public class Delivery {
         }
     }
 
-    private void allDiffCoordinates() { //to prevent any repetitive coordinates
+    private void allDiffCoordinates() { //to prevent any repetitive coordinates of the Customer objects
         for (int i = 0; i < deliveryList.length; i++) {
             int lastX = deliveryList[i].getX();
             int lastY = deliveryList[i].getY();

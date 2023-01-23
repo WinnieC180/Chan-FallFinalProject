@@ -1,6 +1,6 @@
 public class Board {
 
-    private static String[][] board = new String[][] {
+    private static String[][] board = new String[][] { // 2d array [][] the first bracket is the row and the second bracket is column
             {" _", "0_", "__", "1_", "__", "2_", "__", "3_", "_", "_4", "_ "},
             {"| ", " ", " | ", " ", " | ", " ", " | ", " ", " | ", " ", " | 0"},
             {"| ", "_", " | ", "_", " | ", "_", " | ", "_", " | ", "_", " | "},
@@ -18,7 +18,7 @@ public class Board {
     public Board() {
     }
 
-    public static void clearBoard() {
+    public static void clearBoard() { // clears the board before the next X moves.
         board = new String[][] {
                 {" _", "0_", "__", "1_", "__", "2_", "__", "3_", "_", "_4", "_ "},
                 {"| ", " ", " | ", " ", " | ", " ", " | ", " ", " | ", " ", " | 0"},
@@ -55,7 +55,7 @@ public class Board {
             case 4:
                 indexX = 9;
                 break;
-        }
+        } // The switch method will determine where the user (represented by X) will go on the board
         switch(y) {
             case 0:
                 indexY = 1;
@@ -77,7 +77,7 @@ public class Board {
         board[indexX][indexY] = "X";
     }
 
-    public static void printBoard() {
+    public static void printBoard() { //prints out the board row by row
         System.out.println();
         for (String[] row : board) {
             for (String coord : row) {
